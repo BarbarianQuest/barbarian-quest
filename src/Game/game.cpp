@@ -30,6 +30,7 @@ Game::Game()
     terminalText.setCharacterSize(18);
 
 
+
     hitboxMode = false;
     debugMode = true;
     noClip = false;
