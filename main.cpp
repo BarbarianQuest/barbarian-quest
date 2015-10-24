@@ -516,6 +516,7 @@ int main()
 
         game.updateViewInfo(heroview);
 
+
         Game_Window.setView(heroview);
 
         Game_Window.display();

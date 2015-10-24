@@ -74,6 +74,9 @@ void Game::update()
 
     if(printDebug) {debug.println("game - starting");}
 
+
+
+    debugTimer = debugClock.getElapsedTime();
     gameTimer = gameClock.getElapsedTime();
     fpsTimer = fpsClock.restart();
     delta = fpsTimer.asSeconds();
@@ -208,12 +211,12 @@ void Game::update()
     {
         toggleFullscreen = false;
     }
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F12) && !toggleQuit)
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && !toggleQuit)
     {
         quit = true;
         toggleQuit = true;
     }
-    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::F12) && toggleQuit)
+    if(!sf::Keyboard::isKeyPressed(sf::Keyboard::F11) && toggleQuit)
     {
         toggleQuit = false;
     }
@@ -413,7 +416,7 @@ void Game::loadNew()
     levels[0].addBasicRoom(26,5,20,4);
     levels[0].addBasicRoom(9,5,4,25);*/
 
-    levels[0].addObject(0,0,5);
+    /*levels[0].addObject(0,0,5);
 
     levels[0].addObject(2,2,8);
 
@@ -421,12 +424,12 @@ void Game::loadNew()
 
     levels[0].addObject(5,-2,6);
 
-    levels[0].addObject(2,-2,2);
+    levels[0].addObject(2,-2,2);*/
 
     //levels[0].addObject(4,-2,9);
 
 
-    for(i=3; i<6; i++)
+    /*for(i=3; i<6; i++)
     {
         for(j=6; j<12; j++)
         {
@@ -434,7 +437,7 @@ void Game::loadNew()
         }
     //levels[0].addObject(-5,-5,4);
     //levels[0].addObject(-4,-5,4);
-    }
+    }*/
 
 
     for(i=0; i<5; i++)
@@ -464,14 +467,14 @@ void Game::loadNew()
         //levels[0].addObject(2*i - 14,-15,6);
     }
 
-    for(i=-15; i<0; i++)
+/*    for(i=-15; i<0; i++)
     {
         for(j=-15; j<5; j++)
         {
-            int obj = 7+rand()%2;
+            int obj = 3+rand()%6;
             levels[0].addObject(i,j,obj);
         }
-    }
+    }*/
 
     levels[0].addHorizDoor(-10,15,0);
     levels[0].addHorizDoor(20,0,0);

@@ -115,8 +115,8 @@ class Game : public sf::Drawable
         sf::View currentView;
         sf::Vector2f debuggerPosition;
 
-        sf::Clock gameClock,fpsClock;
-        sf::Time gameTimer, fpsTimer;
+        sf::Clock gameClock,fpsClock,debugClock;
+        sf::Time gameTimer, fpsTimer,debugTimer;
 
         vector<Player> players;
 
