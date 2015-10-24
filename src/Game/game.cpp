@@ -45,7 +45,7 @@ Game::Game()
 
     p1 = &players[0];
 
-    printDebug = false;
+    printDebug = true;
 
 }
 
@@ -72,20 +72,27 @@ void Game::update()
     bool anyKey;
     bool read = true;
 
-    if(printDebug) {debug.println("game - starting");}
+    string report = "";
 
 
 
-    debugTimer = debugClock.getElapsedTime();
     gameTimer = gameClock.getElapsedTime();
     fpsTimer = fpsClock.restart();
     delta = fpsTimer.asSeconds();
 
 
     current_fps = (1.0/fpsTimer.asSeconds());
-    setDelta();
 
-    if(printDebug) {debug.println("game - terminal");}
+    report += "lastframeFPS {";
+    report += boost::lexical_cast<string>(current_fps);
+    report += "ms}; ";
+
+    debugTimer = debugClock.getElapsedTime();
+    report += "drawing {";
+    report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+    report += "ms}; ";
+    debugClock.restart();
+    setDelta();
 
 /*    terminalText.setString("");
     controlsActive = true;
@@ -119,8 +126,6 @@ void Game::update()
         returnKeyReleased = true;
     }*/
 
-    if(printDebug) {debug.println("game - fps");}
-
     runningFpsAvg.push_back(current_fps);
 
     int fpsRes = 10;
@@ -136,7 +141,6 @@ void Game::update()
         runningFpsAvg.clear();
     }
 
-    if(printDebug) {debug.println("game - keypresses");}
 
     if(sf::Keyboard::isKeyPressed(sf::Keyboard::F3) && !toggleDebug)
     {
@@ -250,11 +254,38 @@ void Game::update()
     int k,l;
     levels[0].updateWindowInfo(currentView.getCenter());
 
+    debugTimer = debugClock.getElapsedTime();
+    report += "player update {";
+    report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+    report += "ms}; ";
+    debugClock.restart();
+
     levels[0].updateRooms();
+
+    debugTimer = debugClock.getElapsedTime();
+    report += "room updates {";
+    report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+    report += "ms}; ";
+    debugClock.restart();
+
     if(!noClip)
     {
         gamePhysicsEngine.loopOverOneVector(&players[0],allNPContent);
+
+        debugTimer = debugClock.getElapsedTime();
+        report += "player physics {";
+        report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+        report += "ms}; ";
+        debugClock.restart();
+
         gamePhysicsEngine.loopOverOneVector(playerMetaContent[0],allNPContent);
+
+        debugTimer = debugClock.getElapsedTime();
+        report += "player meta physics {";
+        report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+        report += "ms}; ";
+        debugClock.restart();
+
         for(i=0; i<allNPContent.size(); i++)
         {
             if(allNPContent[i]->objRays.getSize() == 0) {continue;}
@@ -270,12 +301,33 @@ void Game::update()
                     }
             }
         }
+
+        debugTimer = debugClock.getElapsedTime();
+        report += "rays { ";
+        report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+        report += " }; ";
+        debugClock.restart();
+
     }
+
+
 
 
     populateAllContent();
 
+    debugTimer = debugClock.getElapsedTime();
+    report += "content population {";
+    report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+    report += "ms}; ";
+    debugClock.restart();
+
     gameRenderEngine.updateContentList(allNPContent,currentView.getCenter());
+
+    debugTimer = debugClock.getElapsedTime();
+    report += "content updates {";
+    report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+    report += "ms}; ";
+    debugClock.restart();
 
     gameRenderEngine.appendNewContent(&players[0]);
     for(i=0; i<playerMetaContent.size(); i++)
@@ -283,7 +335,21 @@ void Game::update()
         gameRenderEngine.appendNewContent(playerMetaContent[i]);
     }
 
+    debugTimer = debugClock.getElapsedTime();
+    report += "player appending {";
+    report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+    report += "ms}; ";
+    debugClock.restart();
+
     gameRenderEngine.sortContent();
+
+    debugTimer = debugClock.getElapsedTime();
+    report += "sprite sorting {";
+    report += boost::lexical_cast<string>(debugTimer.asMilliseconds());
+    report += "ms}; ";
+    debugClock.restart();
+
+    debug.println(report);
 
     return;
 }
@@ -467,14 +533,14 @@ void Game::loadNew()
         //levels[0].addObject(2*i - 14,-15,6);
     }
 
-/*    for(i=-15; i<0; i++)
+    for(i=-15; i<0; i++)
     {
         for(j=-15; j<5; j++)
         {
             int obj = 3+rand()%6;
             levels[0].addObject(i,j,obj);
         }
-    }*/
+    }
 
     levels[0].addHorizDoor(-10,15,0);
     levels[0].addHorizDoor(20,0,0);

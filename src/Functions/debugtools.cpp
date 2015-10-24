@@ -1,3 +1,4 @@
+#include <boost/lexical_cast.hpp>
 #include "debugtools.h"
 
 DebugTools::DebugTools()
@@ -13,6 +14,18 @@ DebugTools::~DebugTools()
 void DebugTools::println(std::string println)
 {
     std::cout << println << endl;
+}
+
+void DebugTools::println(float printNum)
+{
+    string printstr = boost::lexical_cast<string>(printNum);
+    println(printstr);
+}
+
+void DebugTools::println(int printNum)
+{
+    string printstr = boost::lexical_cast<string>(printNum);
+    println(printstr);
 }
 
 void DebugTools::printNumber(std::string name, float num)

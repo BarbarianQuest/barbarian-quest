@@ -17,6 +17,8 @@ class DebugTools
         virtual ~DebugTools();
 
         void println(std::string);
+        void println(int);
+        void println(float);
         void printVector(std::string, sf::Vector2f);
         void printNumber(std::string, int);
         void printNumber(std::string, float);
